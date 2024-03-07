@@ -1,33 +1,19 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
 import { ArticleList } from "./ArticleList.jsx";
+import { fetchArticles } from "./article-api.js";
+import SearchForm from "./form/SearchForm.jsx";
 
 export const App = () => {
-  const [articles, setArticles] = useState([]);
+  const [articles, setArticles] = useState([])
 
-  useEffect(() => {
-    async function fetchArticles() {
-      try {
-        const response = await axios.get(
-          "https://hn.algolia.com/api/v1/search?query=react"
-        );
-        setArticles(response.data.hits);
-      } catch (error) {
-        console.error("Error fetching articles:", error);
-      }
-    }
+  const handleSearch =  async newQuery => {
+    const data = await fetchArticles()
+    setArticles(data)
+  }
 
-    fetchArticles();
-  }, []);
 
-  return (
-    <div>
-      <h1>Latest articles</h1>
-      {articles.length > 0 ? (
-        <ArticleList items={articles} />
-      ) : (
-        <p>Loading articles...</p>
-      )}
+  return <div>
+    <SearchForm onSearch={handleSearch}/>
+    <ArticleList items={articles}/>
     </div>
-  );
 };
