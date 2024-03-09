@@ -1,0 +1,13 @@
+.ImageGallery {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  max-width: 1980px;
+  list-style: none;
+  gap: 30px;
+}
+
+.ImageCard {
+  max-width: 100%; 
+}
