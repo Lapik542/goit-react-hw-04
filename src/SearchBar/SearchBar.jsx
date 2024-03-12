@@ -1,17 +1,19 @@
+import { Form, Formik, Field } from 'formik';
 import css from './SearchBar.module.css'
-import { IoSearch } from "react-icons/io5";
 
-export const SearchBar = ({ }) => {
+export const SearchBar = ({onSearch}) => {
    return (
       <header className={css.headerBar}>
-         <form>
-            <input
-               className={css.formInput}
-               type="text"
-               placeholder="Search images and photos"
-            />
-            <button className={css.searchBtn} type="submit">Search</button>
-         </form>
+         <Formik initialValues={{query: ''}} onSubmit={(values, actions) => {
+            console.log(values);
+            onSearch(values.query);
+            actions.resetForm();
+         }}>
+            <Form>
+               <Field name='query' />
+            </Form>
+            <button type='submit'>Search</button>
+         </Formik>
       </header>
    );
 }
