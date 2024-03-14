@@ -4,32 +4,54 @@ import { SearchBar } from "../SearchBar/SearchBar";
 import { Loader } from "../Loader/Loader";
 import { ImageGallery } from "../ImageGallery/ImageGallery";
 import css from './App.module.css'
+import { ErrorMessage } from "../ErrorMessage/ErrorMessage";
+import { LoadMoreBtn } from "../LoadMoreBtn/LoadMoreBtn";
 
 export const App = () => {
+   const [query, setQuery] = useState('')
    const [images, setImages] = useState([]);
+   const [isLoading, setIsLoading] = useState(false)
+   const [error, setError] = useState(false)
+   const [page, setPage] = useState(1);
 
-   const handleSearch = (newQuery) => {
-      console.log(newQuery);
+   useEffect(() => {
+      if(query === '') {
+         return;
+      }
+
+      async function getData() {
+         try{
+            const data = await fetchImages(query, page);
+            setImages(prevImage => {
+               return [...prevImage, ...data]
+            }); 
+         } catch (error) {
+            setError(true);
+         } finally {
+            setIsLoading(false);
+         }
+      }
+      getData()
+   }, [page, query])
+
+
+   const handleSearch = async (newQuery) => {
+      setQuery(newQuery);
+      setPage(1)
+      setImages([]);
+   };
+
+   const handleGetMore = () => {
+      setPage(page + 1)
    }
 
    return (
       <div className={css.main}>
          <SearchBar onSearch={handleSearch} />
-         <br />
-         <br />
-         <br />
-         <br />
-         <br />
-         <Loader />
-         <ImageGallery items={images} />
+         {isLoading && <Loader />}
+         {error && <ErrorMessage/>}
+         {images.length > 0 && <ImageGallery items={images} />}
+         {images.length > 0 && <LoadMoreBtn onGetMore={handleGetMore} />}
       </div>
    )
 };
-
-// useEffect(() => {
-//    async function getImage() {
-//       const data = await fetchImages()
-//       setImages(data)
-//    }
-//    getImage();
-// }, []);

@@ -13,23 +13,27 @@
   z-index: 1000;
 }
 
-.formInput {
+.formBar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.inputBar {
   width: 400px;
-  height: 50px;
+  height: 30px;
   border-radius: 4px;
-  padding: 0 16px;
 }
 
-.searchBtn {
-  margin-left: 10px;
-  height: 50px;
+.btnBar {
+  margin-left: 12px;
   width: 80px;
+  height: 30px;
   border-radius: 4px;
-  background-color: coral;
-  color: aliceblue;
 }
 
-.searchBtn:hover {
-   background-color: chartreuse;
-   color: black;
+.error {
+  font-size: 24px;
+  color: red;
 }

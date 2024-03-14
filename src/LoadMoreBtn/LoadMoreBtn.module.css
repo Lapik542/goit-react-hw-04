@@ -1,0 +1,8 @@
+.loadMoreBtn {
+    width: 140px;
+    height: 50px;
+    border-radius: 6px;
+    background-color: cornflowerblue;
+    color: #fff;
+    margin-top: 30px;
+}

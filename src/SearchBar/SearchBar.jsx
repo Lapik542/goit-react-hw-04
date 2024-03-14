@@ -1,4 +1,4 @@
-import { Form, Formik, Field, ErrorMessage } from 'formik'; // Додайте імпорт для ErrorMessage
+import { Form, Formik, Field, ErrorMessage } from 'formik'; 
 import * as Yup from 'yup';
 import css from './SearchBar.module.css';
 
@@ -9,15 +9,19 @@ const validationSchema = Yup.object().shape({
 export const SearchBar = ({onSearch}) => {
    return (
       <header className={css.headerBar}>
-         <Formik initialValues={{query: ''}} validationSchema={validationSchema} onSubmit={(values, actions) => {
-            console.log(values);
+         <Formik
+          initialValues={{ query: '' }}
+           validationSchema={validationSchema}
+            onSubmit={(values, actions) => {
             onSearch(values.query);
             actions.resetForm();
          }}>
-            <Form>
-               <Field name='query' />
-               <button type='submit'>Search</button>
-               <ErrorMessage name="query" component="div" className="error" /> {/* Додано ErrorMessage */}
+            <Form className={css.formBar}>
+               <div>
+                  <Field className={css.inputBar} name='query' />
+                  <button className={css.btnBar} type='submit'>Search</button>
+               </div>
+               <ErrorMessage name="query" component="div" className={css.error} />
             </Form>
          </Formik>
       </header>
