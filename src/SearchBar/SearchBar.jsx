@@ -3,7 +3,7 @@ import * as Yup from 'yup';
 import css from './SearchBar.module.css';
 
 const validationSchema = Yup.object().shape({
-   query: Yup.string().required('Поле пошуку не може бути порожнім')
+   query: Yup.string().required('Поле пошуку не може бути порожнім!')
 });
 
 export const SearchBar = ({onSearch}) => {

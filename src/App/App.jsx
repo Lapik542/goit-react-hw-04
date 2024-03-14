@@ -20,17 +20,21 @@ export const App = () => {
       }
 
       async function getData() {
-         try{
+         try {
+            setIsLoading(true);
+            setError(false);
             const data = await fetchImages(query, page);
+            setIsLoading(false);
             setImages(prevImage => {
-               return [...prevImage, ...data]
+               return [...prevImage, ...data];
             }); 
-         } catch (error) {
+         } catch (e) {
             setError(true);
          } finally {
             setIsLoading(false);
          }
       }
+      
       getData()
    }, [page, query])
 
@@ -51,7 +55,7 @@ export const App = () => {
          {isLoading && <Loader />}
          {error && <ErrorMessage/>}
          {images.length > 0 && <ImageGallery items={images} />}
-         {images.length > 0 && <LoadMoreBtn onGetMore={handleGetMore} />}
+         {images.length > 0 && !isLoading && <LoadMoreBtn onGetMore={handleGetMore} />}
       </div>
    )
 };
