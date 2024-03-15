@@ -25,7 +25,7 @@ export const ImageCard = ({ item }) => {
          />
          {isModalOpen && (
             <ImageModal
-               imageUrl={item.urls.full}
+               imageUrl={item.urls.regular}
                altText={item.alt_description}
                onClose={handleCloseModal}
             />

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { CSSTransition } from 'react-transition-group';
 import css from './ImageModal.module.css';
 
@@ -10,8 +10,22 @@ export const ImageModal = ({ imageUrl, altText, onClose }) => {
       onClose();
    };
 
+   const handleKeyDown = (event) => {
+      if (event.key === "Escape") {
+         handleClose();
+      }
+   };
+
+   useEffect(() => {
+      document.addEventListener("keydown", handleKeyDown);
+
+      return () => {
+         document.removeEventListener("keydown", handleKeyDown);
+      };
+   }, []); // Потрібно викликати useEffect тільки раз під час монтування компоненти
+
    return (
-      <CSSTransition in={isOpen} timeout={300} classNames="modal" unmountOnExit>
+      <CSSTransition in={isOpen} timeout={500} classNames="modal" unmountOnExit>
          <div className={css.modalOverlay} onClick={handleClose}>
             <div className={css.modalContent}>
                <img src={imageUrl} alt={altText} />
