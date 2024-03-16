@@ -1,21 +1,22 @@
 import { Form, Formik, Field, ErrorMessage } from 'formik'; 
-import * as Yup from 'yup';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import css from './SearchBar.module.css';
 
-const validationSchema = Yup.object().shape({
-   query: Yup.string().required('Поле пошуку не може бути порожнім!')
-});
-
-export const SearchBar = ({onSearch}) => {
+export const SearchBar = ({ onSearch }) => {
    return (
       <header className={css.headerBar}>
          <Formik
-          initialValues={{ query: '' }}
-           validationSchema={validationSchema}
+            initialValues={{ query: '' }}
             onSubmit={(values, actions) => {
-            onSearch(values.query);
-            actions.resetForm();
-         }}>
+               if (!values.query.trim()) {
+                  toast.error('Поле пошуку не може бути порожнім!');
+               } else {
+                  onSearch(values.query);
+                  actions.resetForm();
+               }
+            }}
+         >
             <Form className={css.formBar}>
                <div>
                   <Field className={css.inputBar} name='query' />

@@ -7,17 +7,18 @@ import css from './App.module.css'
 import { ErrorMessage } from "../ErrorMessage/ErrorMessage";
 import { LoadMoreBtn } from "../LoadMoreBtn/LoadMoreBtn";
 import { ImageModal } from "../ImageModal/ImageModal";
-
+import { ToastContainer } from "react-toastify";
 
 export const App = () => {
-   const [query, setQuery] = useState('')
+   const [query, setQuery] = useState('');
    const [images, setImages] = useState([]);
-   const [isLoading, setIsLoading] = useState(false)
-   const [error, setError] = useState(false)
+   const [isLoading, setIsLoading] = useState(false);
+   const [error, setError] = useState(false);
    const [page, setPage] = useState(1);
-   const [isModalOpen, setIsModalOpen] = useState(false);
    const [modalImageUrl, setModalImageUrl] = useState('');
    const [modalAltText, setModalAltText] = useState('');
+
+   const [isModalOpen, setIsModalOpen] = useState(false);
 
    useEffect(() => {
       if(query === '') {
@@ -54,9 +55,9 @@ export const App = () => {
    }
 
    const handleOpenModal = (imageUrl, altText) => {
-      setIsModalOpen(true);
       setModalImageUrl(imageUrl);
       setModalAltText(altText);
+      setIsModalOpen(true);
    };
 
    const handleCloseModal = () => {
@@ -66,17 +67,25 @@ export const App = () => {
    return (
       <div className={css.main}>
          <SearchBar onSearch={handleSearch} />
+         <ToastContainer />
          {isLoading && <Loader />}
          {error && <ErrorMessage/>}
-         {images.length > 0 && <ImageGallery items={images} toggleModal={handleOpenModal} />}
-         {images.length > 0 && !isLoading && <LoadMoreBtn onGetMore={handleGetMore} />}
+         {images.length > 0 && (
+            <>
+               <ImageGallery items={images} toggleModal={handleOpenModal} />
+               <LoadMoreBtn onGetMore={handleGetMore} />
+            </>
+         )}
          {isModalOpen && (
             <ImageModal
-               imageUrl={modalImageUrl}
-               altText={modalAltText}
-               onClose={handleCloseModal}
+                isOpen={isModalOpen}
+                imageUrl={modalImageUrl}
+                altText={modalAltText}
+                onClose={handleCloseModal}
+                setIsOpen={setIsModalOpen}
             />
-         )}
+)}
+
       </div>
    )
 };

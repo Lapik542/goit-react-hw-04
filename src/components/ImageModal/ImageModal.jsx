@@ -1,39 +1,45 @@
-import { useState, useEffect } from "react";
-import { CSSTransition } from 'react-transition-group';
+
+import Modal from "react-modal";
 import css from './ImageModal.module.css';
 
-export const ImageModal = ({ imageUrl, altText, onClose }) => {
-   const [isOpen, setIsOpen] = useState(true);
+const customStyles = {
+  overlay: {
+    backgroundColor: 'rgba(0, 0, 0, 0.5)'
+  },
+  content: {
+    top: '50%',
+    left: '50%',
+    right: 'auto',
+    bottom: 'auto',
+    marginRight: '-50%',
+    transform: 'translate(-50%, -50%)',
+    border: 'none',
+    background: 'none',
+    padding: 0,
+    overflow: 'visible'
+  }
+};
 
-   const handleClose = () => {
-      setIsOpen(false);
-      onClose();
-   };
+Modal.setAppElement('#root');
 
-   const handleKeyDown = (event) => {
-      if (event.key === "Escape") {
-         handleClose();
-      }
-   };
+export const ImageModal = ({ isOpen, imageUrl, altText, onClose }) => {
+  const handleClick = () => {
+    onClose();
+  };
 
-   useEffect(() => {
-      document.addEventListener("keydown", handleKeyDown);
-
-      return () => {
-         document.removeEventListener("keydown", handleKeyDown);
-      };
-   }, []); // Потрібно викликати useEffect тільки раз під час монтування компоненти
-
-   return (
-      <CSSTransition in={isOpen} timeout={500} classNames="modal" unmountOnExit>
-         <div className={css.modalOverlay} onClick={handleClose}>
-            <div className={css.modalContent}>
-               <img src={imageUrl} alt={altText} />
-               <button onClick={handleClose} className={css.closeButton}>
-                  Close
-               </button>
-            </div>
-         </div>
-      </CSSTransition>
-   );
+  return (
+    <Modal
+      isOpen={isOpen}
+      onRequestClose={onClose}
+      style={customStyles}
+      contentLabel="Image Modal"
+    >
+      <div className={css.modalContent}>
+        <img src={imageUrl} alt={altText} onClick={handleClick} />
+        <button onClick={onClose} className={css.closeButton}>
+          Close
+        </button>
+      </div>
+    </Modal>
+  );
 };
